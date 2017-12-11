@@ -4,11 +4,11 @@
   "description": "leetcode collection",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/orangeflame/leetcode.git"
+    "url": "https://github.com/orangeflame/leetcode.git"
   },
   "keywords": [
     "leetcode"
