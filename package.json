@@ -1,0 +1,25 @@
+{
+  "name": "leetcode",
+  "version": "1.0.0",
+  "description": "leetcode collection",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/orangeflame/leetcode.git"
+  },
+  "keywords": [
+    "leetcode"
+  ],
+  "author": "le.zheng",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/orangeflame/leetcode/issues"
+  },
+  "homepage": "https://github.com/orangeflame/leetcode#readme",
+  "dependencies": {
+    "expect.js": "^0.3.1"
+  }
+}
