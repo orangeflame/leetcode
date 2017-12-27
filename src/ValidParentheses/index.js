@@ -1,50 +1,48 @@
-/* Given a string containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
-The brackets must close in the correct order, "()" and "()[]{}" are all valid but "(]" and "([)]" are not. */
-/**
- * @param {string} s
- * @return {boolean}
- */
-export const isValid = function(s) {
-    const chars = s.split('');
-    const signal = [];
-    if (s.length % 2 !== 0) {
-        return false;
-    }
-    let result = true;    
-    for (let i = 0; i < chars.length; i++) {
-        switch(chars[i]){
-            case('('):
-                signal.push('small');
-                break;
-            case(')'):
-                if (signal[signal.length - 1] === 'small') {
-                    signal.pop();
-                } else {
-                    result = false;
-                }
-                break;
-            case('['):
-                signal.push('middle');
-                break;
-            case(']'):
-                if (signal[signal.length - 1] === 'middle') {
-                    signal.pop();
-                } else {
-                    result = false;
-                }
-                break;    
-            case('{'):
-                signal.push('big');
-                break;
-            case('}'):
-                if (signal[signal.length - 1] === 'big') {
-                    signal.pop();
-                } else {
-                    result = false;
-                }
-                break;  
-        }
-    }
-    return result && signal.length === 0;
-}
+import R from 'Ramda';
 
+export const isValid = function(s) {
+    const splitIntoSignals = () => s.split('');
+    const getSummary = (signals) => R.reduce((summary, currentChar) => {
+        let { pairs, isStopped } = summary;  
+        if (! isStopped) {
+            switch(currentChar){
+                case('('):
+                pairs.push('small');
+                    break;
+                case(')'):
+                    if (pairs[pairs.length - 1] === 'small') {
+                        pairs.pop();
+                    } else {
+                        isStopped = true;
+                    }
+                    break;
+                case('['):
+                    pairs.push('middle');
+                    break;
+                case(']'):
+                    if (pairs[pairs.length - 1] === 'middle') {
+                        pairs.pop();
+                    } else {
+                        isStopped = true;
+                    }
+                    break;    
+                case('{'):
+                    pairs.push('big');
+                    break;
+                case('}'):
+                    if (pairs[pairs.length - 1] === 'big') {
+                        pairs.pop();
+                    } else {
+                        isStopped = true;
+                    }
+                    break;
+            }
+        }    
+        return { pairs, isStopped };
+    }, { pairs: [] , isStopped: false}, signals);
+    const isEven = (signals) => signals.length % 2 === 0;
+    const isEmpty = (summary) => summary.pairs.length === 0 && ! summary.isStopped;
+    const p1 = R.pipe(splitIntoSignals, isEven);
+    const p2 = R.pipe(splitIntoSignals, getSummary, isEmpty);
+    return R.allPass([p1, p2])(s);
+}
